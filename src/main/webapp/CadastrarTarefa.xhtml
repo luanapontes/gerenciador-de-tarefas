@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="file.css" />
+	<title>Cadastrar Tarefa</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:panel>
+		<h1>Cadastrar Tarefa</h1>
+		<h:panelGrid columns="1">
+			<p:outputLabel value="ID: "></p:outputLabel>
+			<p:inputText value="#{tarefaController.tarefa.id}" readonly="true" disabled ="true"/>
+
+			<p:outputLabel value="Título: " ></p:outputLabel>
+			<p:inputText value="#{tarefaController.tarefa.titulo}"
+				maxlength="255" requiredMessage="O campo Título é obrigatório!"/>
+
+			<p:outputLabel value="Descrição: " ></p:outputLabel>
+			<p:inputTextarea rows="3" cols="20"
+				value="#{tarefaController.tarefa.descricao}" maxlength="255" requiredMessage="O campo Descrição é obrigatório!">
+			</p:inputTextarea>
+
+			<p:outputLabel value="Responsável: " ></p:outputLabel>
+			<p:inputText value="#{tarefaController.tarefa.responsavel}"
+				maxlength="255" requiredMessage="O campo Responsável é obrigatório!">
+			</p:inputText>
+
+			<p:outputLabel value="Prioridade: "></p:outputLabel>
+			<p:selectOneMenu value="#{tarefaController.tarefa.prioridade}">
+				<f:selectItem itemValue="BAIXA" itemLabel="Baixa" />
+				<f:selectItem itemValue="MEDIA" itemLabel="Média" />
+				<f:selectItem itemValue="ALTA" itemLabel="Alta" />
+			</p:selectOneMenu>
+
+			<p:outputLabel value="Data: " ></p:outputLabel>
+			<p:inputText value="#{tarefaController.tarefa.data}" placeholder="dd-mm-yyyy" requiredMessage="O campo Data precisa está no formato dd-mm-yyyy!">
+				<f:convertDateTime pattern="dd-mm-yyyy" />
+			</p:inputText>
+			
+			<p:outputLabel value="Situação: " ></p:outputLabel>
+			<p:inputText value="#{tarefaController.tarefa.status}" readonly="true" disabled ="true">
+			</p:inputText>
+
+			<p:commandButton action="#{tarefaController.salvar}"
+				value="Cadastrar" update="form tabelaTarefa" />
+			<p:commandButton action="#{tarefaController.novo}" value="Novo" update="form"/>
+			</h:panelGrid>
+		</p:panel>
+		<br />
+		<h1>Lista de Tarefas</h1>
+
+		<p:dataTable value="#{tarefaController.tarefas}" var="t" borde="1"
+			id="tabelaTarefa">
+			<p:column headerText="ID">
+				<h:outputLabel value="#{t.id}" />
+			</p:column>
+
+			<p:column headerText="Título">
+				<h:outputLabel value="#{t.titulo}" />
+			</p:column>
+
+			<p:column headerText="Descrição">
+				<h:outputLabel value="#{t.descricao}" />
+			</p:column>
+
+			<p:column headerText="Responsável">
+				<p:outputLabel value="#{t.responsavel}" />
+			</p:column>
+
+			<p:column headerText="Prioridade">
+				<p:outputLabel value="#{t.prioridade}" />
+			</p:column>
+
+			<p:column headerText="Data">
+				<p:outputLabel value="#{t.data}">
+					<f:convertDateTime pattern="dd-mm-yyyy" />
+				</p:outputLabel>
+			</p:column>
+			
+			<p:column headerText="Situação">
+				<p:outputLabel value="#{t.status}" />
+			</p:column>
+
+			<p:column headerText="Excluir" width="70">
+				<p:commandButton value="Excluir"
+					action="#{tarefaController.excluir}" update="form tabelaTarefa">
+					<f:setPropertyActionListener value="#{t}"
+						target="#{tarefaController.tarefa}" />
+				</p:commandButton>
+			</p:column>
+
+			<p:column headerText="Editar" width="70">
+				<p:commandButton value="Editar" action="#{tarefaController.editar}">
+					<f:setPropertyActionListener value="#{t}"
+						target="#{tarefaController.tarefa}" />
+				</p:commandButton>
+			</p:column>
+			
+			<p:column headerText="Concluir" width="70">
+				<p:commandButton value="Concluir" action="#{tarefaController.concluida}" update="form tabelaTarefa">
+					<f:setPropertyActionListener value="#{t}"
+						target="#{tarefaController.tarefa}" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+
+</h:body>
+</html>
